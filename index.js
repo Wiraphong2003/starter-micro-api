@@ -9,11 +9,12 @@ const conn = mysql.createConnection({
     database: 'dbM6',
     port: '19978'
 })
-// http.createServer(function (req, res) {
-//     console.log(`Just got a request at ${req.url}!`)
-//     res.write('M6 API YO');
-//     res.end();
-// }).listen(process.env.PORT || 3000);
+http.createServer(function (req, res) {
+    console.log(`Just got a request at ${req.url}!`)
+    res.write('M6 API YO');
+    res.end();
+})
+
 conn.connect((err) => {
     if (err) {
         console.log("Error connecion to Mysql ")
@@ -21,9 +22,11 @@ conn.connect((err) => {
     }
     console.log("My sql Success")
 });
-app.get('/', function (req, res, next) {
-    res.render('index', { title: 'Express', session: req.session });
-});
+
+// app.get('/', function (req, res, next) {
+//     res.render('index', { title: 'Express', session: req.session });
+// });
+
 app.get("/read", async (req, res) => {
     try {
         conn.query(
