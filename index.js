@@ -118,7 +118,7 @@ app.post("/users", async (req, res) => {
                     return res.status(401).json({ message: "Invalid username or password", Boolean: false });
                 }
                 // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
-                return res.status(200).json({ message: "Login successful", Boolean: true });
+                return res.status(200).json(results);
             }
         )
     } catch (err) {
