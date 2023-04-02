@@ -66,7 +66,7 @@ app.post("/create", async (req, res) => {
     }
 })
 
-app.post("/logins", async (req, res) => {
+app.post("/login", async (req, res) => {
     const { username, password } = req.body;
 
     try {
