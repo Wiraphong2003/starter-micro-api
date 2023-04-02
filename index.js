@@ -4,6 +4,14 @@ const mysql = require('mysql')
 const app = express();
 app.use(express.json())
 
+app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', "*");
+    res.header('Access-Control-Allow-Origin', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Origin', "Content-Type");
+    next();
+})
+
+
 const conn = mysql.createConnection({
     host: 'mysql-119174-0.cloudclusters.net',
     user: 'useM6',
