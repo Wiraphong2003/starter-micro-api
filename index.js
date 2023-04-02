@@ -45,7 +45,7 @@ app.get("/read", async (req, res) => {
     }
 })
 
-app.post("/create", async (req, res) => {
+app.post("/creates", async (req, res) => {
     const { username, password, PIN } = req.body;
 
     try {
@@ -64,4 +64,6 @@ app.post("/create", async (req, res) => {
         return res.status(500).send();
     }
 })
+
+
 app.listen(3000, () => console.log("Server is runing "));
