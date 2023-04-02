@@ -2,9 +2,7 @@ var http = require('http');
 const express = require('express')
 const mysql = require('mysql')
 const app = express();
-app.use(express.json)
-
-
+app.use(express.json())
 
 const conn = mysql.createConnection({
     host: 'mysql-119174-0.cloudclusters.net',
@@ -49,9 +47,8 @@ app.get("/read", async (req, res) => {
     }
 })
 
-app.post("/creates", async (req, res) => {
+app.post("/create", async (req, res) => {
     const { username, password, PIN } = req.body;
-    console.log(username, password, PIN)    
     try {
         conn.query(
             "INSERT INTO usercustomer(username, password, PIN) VALUES (?,?,?)", [username, password, PIN],
