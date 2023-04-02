@@ -2,6 +2,10 @@ var http = require('http');
 const express = require('express')
 const mysql = require('mysql')
 const app = express();
+app.use(express.json)
+
+
+
 const conn = mysql.createConnection({
     host: 'mysql-119174-0.cloudclusters.net',
     user: 'useM6',
