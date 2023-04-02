@@ -9,11 +9,11 @@ const conn = mysql.createConnection({
     database: 'dbM6',
     port: '19978'
 })
-http.createServer(function (req, res) {
-    console.log(`Just got a request at ${req.url}!`)
-    res.write('M6 API YO');
-    res.end();
-})
+// http.createServer(function (req, res) {
+//     console.log(`Just got a request at ${req.url}!`)
+//     res.write('M6 API YO');
+//     res.end();
+// })
 
 conn.connect((err) => {
     if (err) {
@@ -47,7 +47,7 @@ app.get("/read", async (req, res) => {
 
 app.post("/creates", async (req, res) => {
     const { username, password, PIN } = req.body;
-
+    console.log(username, password, PIN)    
     try {
         conn.query(
             "INSERT INTO usercustomer(username, password, PIN) VALUES (?,?,?)", [username, password, PIN],
