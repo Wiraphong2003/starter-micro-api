@@ -66,6 +66,26 @@ app.get("/read", async (req, res) => {
         return redirect('your_result_view_name_in_urls', results = results)
     }
 })
+app.get("/Lottary/:id", async (req, res) => {
+    const id = req.params.id; // retrieve the id parameter from the URL path
+    try {
+        conn.query(
+            "SELECT * FROM Lottery WHERE id = ?",
+            [id], // pass the id parameter as a query parameter
+            (err, results, fields) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(400).send();
+                }
+                res.status(200).json(results)
+            }
+        )
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send();
+    }
+})
+
 
 app.post("/create", async (req, res) => {
     const { username, password, PIN } = req.body;
