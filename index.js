@@ -23,11 +23,11 @@ app.use(function (req, res, next) {
 
 
 const conn = mysql.createConnection({
-    host: 'mysql-119174-0.cloudclusters.net',
-    user: 'useM6',
+    host: 'mysql-120961-0.cloudclusters.net',
+    user: 'M6user',
     password: 'qwer/.,m',
     database: 'dbM6',
-    port: '19978'
+    port: '16225'
 })
 
 // http.createServer(function (req, res) {
@@ -51,7 +51,7 @@ conn.connect((err) => {
 app.get("/read", async (req, res) => {
     try {
         conn.query(
-            "SELECT * FROM usercustomer",
+            "SELECT * FROM users",
             (err, results, fields) => {
                 if (err) {
                     console.log(err);
@@ -71,7 +71,7 @@ app.post("/create", async (req, res) => {
     const { username, password, PIN } = req.body;
     try {
         conn.query(
-            "INSERT INTO usercustomer(username, password, PIN) VALUES (?,?,?)", [username, password, PIN],
+            "INSERT INTO users(username, password, status) VALUES (?,?,?)", [username, password, PIN],
             (err, results, fields) => {
                 if (err) {
                     console.log("Error inert");
@@ -120,7 +120,7 @@ app.post("/login", async (req, res) => {
 
     try {
         conn.query(
-            "SELECT * FROM usercustomer WHERE username = ? AND password = ?", [username, password],
+            "SELECT * FROM users WHERE username = ? AND password = ?", [username, password],
             (err, results, fields) => {
                 if (err) {
                     console.log("Error fetching user");
@@ -145,7 +145,7 @@ app.post("/users", async (req, res) => {
 
     try {
         conn.query(
-            "SELECT * FROM usercustomer WHERE username = ?", [username],
+            "SELECT * FROM users WHERE username = ?", [username],
             (err, results, fields) => {
                 if (err) {
                     console.log("Error fetching user");
