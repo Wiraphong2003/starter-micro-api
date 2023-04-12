@@ -70,7 +70,7 @@ app.get("/Lottary/:id", async (req, res) => {
     const id = req.params.id; // retrieve the id parameter from the URL path
     try {
         conn.query(
-            "SELECT * FROM Lottery WHERE id = ?",
+            "SELECT * FROM Lottery WHERE type = ?",
             [id], // pass the id parameter as a query parameter
             (err, results, fields) => {
                 if (err) {
