@@ -51,7 +51,7 @@ conn.connect((err) => {
 app.get("/read", async (req, res) => {
     try {
         conn.query(
-            "SELECT * FROM users",
+            "SELECT * FROM Lottery",
             (err, results, fields) => {
                 if (err) {
                     console.log(err);
