@@ -66,6 +66,7 @@ app.get("/read", async (req, res) => {
         return redirect('your_result_view_name_in_urls', results = results)
     }
 })
+
 app.get("/Lottary/:id", async (req, res) => {
     const id = req.params.id; // retrieve the id parameter from the URL path
     try {
