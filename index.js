@@ -29,6 +29,7 @@ const conn = mysql.createConnection({
     database: 'dbM6',
     port: '19978'
 })
+
 // http.createServer(function (req, res) {
 //     console.log(`Just got a request at ${req.url}!`)
 //     res.write('M6 API YO');
@@ -85,7 +86,36 @@ app.post("/create", async (req, res) => {
     }
 })
 
+// app.post("/login", async (req, res) => {
+//     const { username, password } = req.body;
+
+//     try {
+//         conn.query(
+//             "SELECT * FROM usercustomer WHERE username = ? AND password = ?", [username, password],
+//             (err, results, fields) => {
+//                 if (err) {
+//                     console.log("Error fetching user");
+//                     return res.status(400).send();
+//                     // return redirect('your_result_view_name_in_urls', results = res.status(400).send())
+//                 }
+//                 if (results.length === 0) {
+//                     return res.status(401).json({ message: "Invalid username or password", Boolean: false });
+//                     // return redirect('your_result_view_name_in_urls', results = res.status(401).json({ message: "Invalid username or password", Boolean: false }))
+//                 }
+//                 // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+//                 return res.status(200).json({ message: "Login successful", Boolean: true });
+//                 // return redirect('your_result_view_name_in_urls', results = res.status(200).json({ message: "Login successful", Boolean: true }))
+//             }
+//         )
+//     } catch (err) {
+//         console.log(err);
+//         return res.status(500).send();
+//         // return redirect('your_result_view_name_in_urls', results = res.status(500).send())
+//     }
+// });
+
 app.post("/login", async (req, res) => {
+    console.log("==============login============");
     const { username, password } = req.body;
 
     try {
@@ -95,23 +125,19 @@ app.post("/login", async (req, res) => {
                 if (err) {
                     console.log("Error fetching user");
                     return res.status(400).send();
-                    // return redirect('your_result_view_name_in_urls', results = res.status(400).send())
                 }
                 if (results.length === 0) {
                     return res.status(401).json({ message: "Invalid username or password", Boolean: false });
-                    // return redirect('your_result_view_name_in_urls', results = res.status(401).json({ message: "Invalid username or password", Boolean: false }))
                 }
-                // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
                 return res.status(200).json({ message: "Login successful", Boolean: true });
-                // return redirect('your_result_view_name_in_urls', results = res.status(200).json({ message: "Login successful", Boolean: true }))
             }
         )
     } catch (err) {
         console.log(err);
         return res.status(500).send();
-        // return redirect('your_result_view_name_in_urls', results = res.status(500).send())
     }
 });
+
 
 
 app.post("/users", async (req, res) => {
