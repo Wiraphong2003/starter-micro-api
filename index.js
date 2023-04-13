@@ -1,9 +1,17 @@
 
 
 var http = require('http');
-const express = require('express')
-const mysql = require('mysql')
-const app = express();
+var express = require('express')
+var mysql = require('mysql')
+var app = express();
+
+// app.use(express.static('public'))
+// app.use(bodyParser.json())
+// app.use(bodyParser.urlencoded({ extended: true }))
+
+var bodyParser = require('body-parser');
+var urlencodedParser = bodyParser.urlencoded({ extended: true })
+app.use(express.static('public'));
 app.use(express.json())
 
 
@@ -135,7 +143,7 @@ app.post("/create", async (req, res) => {
 //     }
 // });
 
-app.post("/login", async (req, res) => {
+app.post("/login", urlencodedParser, async (req, res) => {
     console.log("==============login============");
     const { username, password } = req.body;
 
@@ -185,6 +193,19 @@ app.post("/users", async (req, res) => {
     }
 });
 
+app.post('/process_post', urlencodedParser, function (req, res) {
+    // Prepare output in JSON format  
+    response = {
+        first_name: req.body.first_name,
+        last_name: req.body.last_name
+    };
+    console.log(response);
+    res.end(JSON.stringify(response));
+})  
 
-
-app.listen(3000, () => console.log("Server is runing "));
+var server = app.listen(8000, function () {
+    var host = server.address().address
+    var port = server.address().port
+    console.log("Example app listening at http://%s:%s", host, port)
+})
+// app.listen(3000, () => console.log("Server is runing "));
