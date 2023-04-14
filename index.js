@@ -75,6 +75,7 @@ app.get("/read", async (req, res) => {
     }
 })
 
+
 app.get("/Lottary/:id", async (req, res) => {
     const id = req.params.id; // retrieve the id parameter from the URL path
     try {
@@ -95,6 +96,27 @@ app.get("/Lottary/:id", async (req, res) => {
     }
 })
 
+
+
+app.get("/image/:username", async (req, res) => {
+    const user = req.params.username; // retrieve the id parameter from the URL path
+    try {
+        conn.query(
+            "SELECT * FROM `users` WHERE username = ?",
+            [user], // pass the id parameter as a query parameter
+            (err, results, fields) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(400).send();
+                }
+                res.status(200).json(results)
+            }
+        )
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send();
+    }
+})
 
 app.post("/create", async (req, res) => {
     const { username, password, PIN } = req.body;
@@ -203,7 +225,7 @@ app.post('/process_post', urlencodedParser, function (req, res) {
     res.end(JSON.stringify(response));
 })  
 
-var server = app.listen(8000, function () {
+var server = app.listen(3000, function () {
     var host = server.address().address
     var port = server.address().port
     console.log("Example app listening at http://%s:%s", host, port)
