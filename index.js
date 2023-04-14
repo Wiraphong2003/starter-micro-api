@@ -1,18 +1,21 @@
 
-
+const fs = require('fs')
 var http = require('http');
 var express = require('express')
 var mysql = require('mysql')
 var app = express();
-
+const textToImage = require('text-to-image');
 // app.use(express.static('public'))
 // app.use(bodyParser.json())
 // app.use(bodyParser.urlencoded({ extended: true }))
 
 var bodyParser = require('body-parser');
+const { log } = require('console');
 var urlencodedParser = bodyParser.urlencoded({ extended: true })
 app.use(express.static('public'));
 app.use(express.json())
+
+
 
 
 
@@ -74,6 +77,57 @@ app.get("/read", async (req, res) => {
         return redirect('your_result_view_name_in_urls', results = results)
     }
 })
+app.get("/CreateImage/:id", (req, res) => {
+    const id = req.params.id;
+    try {
+        conn.query(
+            "SELECT * FROM users WHERE username = ?",
+            [id], // pass the id parameter as a query parameter
+            (err, results, fields) => {
+                console.log(results);
+                if (err) {
+                    console.log(err);
+                    return res.status(400).send();
+                }
+                const { loadImage, createCanvas } = require("canvas");
+                const width = 800;
+                const height = 800;
+                const canvas = createCanvas(width, height);
+                const context = canvas.getContext("2d");
+                context.fillStyle = "#2b03a3";
+                context.fillRect(0, 0, width, height);
+                context.font = "bold 72pt Menlo";
+                context.textBaseline = "top";
+                context.textAlign = "center";
+                context.fillStyle = "#f7ab07";
+                const imgText = "Max M6";
+                const textAlign = context.measureText(imgText).width;
+                context.fillRect(
+                    590 - textAlign / 2 - 10,
+                    170 - 5,
+                    textAlign + 20,
+                    120
+                );
+                context.fillStyle = "#ffffff";
+                context.fillText(imgText, 555, 120);
+                context.fillStyle = "#ffffff";
+                context.font = "bold 32pt Menlo";
+                context.fillText("positronx.io", 755, 600);
+                console.log(results.img1);
+                loadImage(results.img1).then((data) => {
+                    context.drawImage(data, 340, 515, 70, 70);
+                    const imgBuffer = canvas.toBuffer("image/png");
+                    // Send the image file as a response
+                    res.type("png").send(imgBuffer);
+                });
+            }
+        );
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send();
+    }
+});
+
 
 
 app.get("/Lottary/:id", async (req, res) => {
@@ -119,10 +173,10 @@ app.get("/image/:username", async (req, res) => {
 })
 
 app.post("/create", async (req, res) => {
-    const { username, password, PIN } = req.body;
+    const { username, password, status, img } = req.body;
     try {
         conn.query(
-            "INSERT INTO users(username, password, status) VALUES (?,?,?)", [username, password, PIN],
+            "INSERT INTO users(username, password, status,img1) VALUES (?,?,?,?)", [username, password, status, img],
             (err, results, fields) => {
                 if (err) {
                     console.log("Error inert");
