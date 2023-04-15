@@ -3,30 +3,47 @@ const fs = require('fs')
 var http = require('http');
 var express = require('express')
 var mysql = require('mysql')
+var cors = require('cors')
 var app = express();
 const textToImage = require('text-to-image');
-// app.use(express.static('public'))
-// app.use(bodyParser.json())
-// app.use(bodyParser.urlencoded({ extended: true }))
-
+const PORT = process.env.PORT || 3000;
 var bodyParser = require('body-parser');
 const { log } = require('console');
 var urlencodedParser = bodyParser.urlencoded({ extended: true })
 app.use(express.static('public'));
 app.use(express.json())
+app.use(express.text())
+app.use(express.urlencoded({ extended: true }))
 
 
+var corsOptions = {
+    origin: 'http://localhost:3000',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Accept,Accept- Language, Content - Language, Content - Type');
+    next();
+});
+app.use(cors())
 
 
+app.all("/*", function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Content-Type, Authorization, Content-Length, X-Requested-With"
+    );
+    res.setHeader('Access-Control-Allow-Headers', 'Accept,Accept- Language, Content - Language, Content - Type');
+    next();
+});
 
-
-
-app.use(express.urlencoded({ extended: true }));
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', "*");
-    // res.header('Access-Control-Allow-Origin', "http://localhost:4200");
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', "Content-Type");
+    res.setHeader('Access-Control-Allow-Headers', 'Accept,Accept- Language, Content - Language, Content - Type');
     next();
 })
 
@@ -59,7 +76,7 @@ conn.connect((err) => {
 //     res.render('index', { title: 'Express', session: req.session });
 // });
 
-app.get("/read", async (req, res) => {
+app.get("/read", async (req, res,) => {
     try {
         conn.query(
             "SELECT * FROM Lottery",
@@ -219,7 +236,7 @@ app.post("/create", async (req, res) => {
 //     }
 // });
 
-app.post("/login", urlencodedParser, async (req, res) => {
+app.post("/login", urlencodedParser, cors(corsOptions), function (req, res) {
     console.log("==============login============");
     const { username, password } = req.body;
 
@@ -279,7 +296,7 @@ app.post('/process_post', urlencodedParser, function (req, res) {
     res.end(JSON.stringify(response));
 })  
 
-var server = app.listen(3000, function () {
+var server = app.listen(PORT, () => {
     var host = server.address().address
     var port = server.address().port
     console.log("Example app listening at http://%s:%s", host, port)
