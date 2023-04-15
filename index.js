@@ -236,7 +236,7 @@ app.post("/create", async (req, res) => {
 //     }
 // });
 
-app.post("/login", urlencodedParser, cors(corsOptions), function (req, res) {
+app.post("/login", async (req, res) => {
     console.log("==============login============");
     const { username, password } = req.body;
 
@@ -252,6 +252,30 @@ app.post("/login", urlencodedParser, cors(corsOptions), function (req, res) {
                     return res.status(401).json({ message: "Invalid username or password", Boolean: false });
                 }
                 return res.status(200).json({ message: "Login successful", Boolean: true });
+            }
+        )
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send();
+    }
+});
+
+app.post("/testpost", function (req, res) {
+    console.log("==============login============");
+    const { username } = req.body;
+
+    try {
+        conn.query(
+            "SELECT * FROM users WHERE username = ? ", [username],
+            (err, results, fields) => {
+                if (err) {
+                    console.log("Error fetching user");
+                    return res.status(400).send();
+                }
+                if (results.length === 0) {
+                    return res.status(401).json({ message: "Invalid username or password", Boolean: false });
+                }
+                return res.status(200).json(results);
             }
         )
     } catch (err) {
